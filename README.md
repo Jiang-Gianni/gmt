@@ -19,7 +19,7 @@ gmt -dir exampleMdDirectory -out exampleOutDirectory
 
 In case of a single file:
 ```bash
-gmt -dir exampleMdFile.md -out exampleOutDirectory
+gmt -file exampleMdFile.md -out exampleOutDirectory
 ```
 
 **-dir** and **-out** have both "." (current directory) as default.
