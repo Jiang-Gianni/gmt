@@ -134,4 +134,4 @@ is parsed as:
 </svg>
 </div>
 ```
-![](./assets/pkchr.svg)
+![](./assets/pikchr.svg)
