@@ -1,8 +1,12 @@
 <!-- `{% func () %}` -->
 
+<!-- class="bg-red-200 text-gray-600" -->
 # Rst neio
 
-<span style="color:red">**`_hello_`**</span>
+<!-- class="text-red-400 animate-pulse" -->
+hello world
+
+<span style="color:blue">**`_hello_`**</span>
 
 <!-- class="bg-teal-700" -->
 ```pikchr
@@ -12,6 +16,8 @@ arrow right 200% "HTML+SVG" "Output"
 arrow <-> down 70% from last box.s
 box same "Pikchr" "Formatter" "(pikchr.c)" fit
 ```
+
+[z](./z.html)
 
 ~~arst~~
 

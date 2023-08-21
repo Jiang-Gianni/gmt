@@ -1,0 +1,4 @@
+{% func addStyleTag(styles []string, body string) %}
+<style>{% for _, style := range styles %}{%s style %}{% endfor %}</style>
+{%s= body %}
+{% endfunc %}
