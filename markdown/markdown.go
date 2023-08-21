@@ -71,8 +71,10 @@ func transformString(input string, cssLink string) string {
 	// <!-- class="bg-teal-700" -->
 	re = regexp.MustCompile(`<!--(.*?)-->\n<(.*?)>`)
 	transformed = re.ReplaceAllString(transformed, "<$2 $1>")
-	re = regexp.MustCompile(`<!--(.*?)-->(.*?)<`)
-	transformed = re.ReplaceAllString(transformed, "<div $1>$2<div><")
+	re = regexp.MustCompile(`<!--(.*?)--><(.*?)>`)
+	transformed = re.ReplaceAllString(transformed, "<$2 $1>")
+	re = regexp.MustCompile(`><!--(.*?)-->(.*?)</`)
+	transformed = re.ReplaceAllString(transformed, "><div $1>$2</div><")
 
 	classes := css.GetClasses(transformed)
 	styles := css.GetStyles(classes)
