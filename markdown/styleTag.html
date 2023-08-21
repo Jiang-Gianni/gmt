@@ -1,4 +1,5 @@
-{% func addStyleTag(styles []string, body string) %}
-<style>{% for _, style := range styles %}{%s style %}{% endfor %}</style>
+{% func addStyleTag(styles []string, cssLink string, body string) %}{%= addCssLink(cssLink) %}<style>{% for _, style := range styles %}{%s style %}{% endfor %}</style>
 {%s= body %}
 {% endfunc %}
+
+{% func addCssLink(cssLink string) %}{% if cssLink != "" %}<link rel="stylesheet" href="{%s cssLink %}">{% endif %}{% endfunc %}

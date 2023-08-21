@@ -1,12 +1,17 @@
 <!-- `{% func () %}` -->
 
+```go
+import arst
+```
+
 <!-- class="bg-red-200 text-gray-600" -->
 # Rst neio
 
-<!-- class="text-red-400 animate-pulse" -->
+<!-- class="text-red-400 animate-boun" -->
 hello world
 
-<span style="color:blue">**`_hello_`**</span>
+<!-- class="text-blue-800" -->
+**`_hello_`**
 
 <!-- class="bg-teal-700" -->
 ```pikchr

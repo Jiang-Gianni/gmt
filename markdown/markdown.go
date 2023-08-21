@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"regexp"
 
 	"github.com/Jiang-Gianni/gmt/css"
@@ -29,7 +30,7 @@ var Md = goldmark.New(
 	),
 )
 
-func ConvertFile(mdFile string, outputFile string) {
+func ConvertFile(mdFile string, outputFile string, css string) {
 	f, err := os.Open(mdFile)
 	if err != nil {
 		log.Println(err)
@@ -44,15 +45,16 @@ func ConvertFile(mdFile string, outputFile string) {
 		panic(err)
 	}
 	contents := buf.String()
+	os.MkdirAll(filepath.Dir(outputFile), os.ModePerm)
 	o, _ := os.Create(outputFile)
 	w := bufio.NewWriter(o)
-	transformed := transformString(contents)
+	transformed := transformString(contents, css)
 	w.WriteString(transformed)
 	w.Flush()
 	o.Close()
 }
 
-func transformString(input string) string {
+func transformString(input string, cssLink string) string {
 	var re *regexp.Regexp
 	var transformed string
 
@@ -74,6 +76,6 @@ func transformString(input string) string {
 
 	classes := css.GetClasses(transformed)
 	styles := css.GetStyles(classes)
-	transformed = addStyleTag(styles, transformed)
+	transformed = addStyleTag(styles, cssLink, transformed)
 	return transformed
 }
