@@ -13,6 +13,8 @@ func GetStyles(classes []string) []string {
 	re := regexp.MustCompile(`animate-(.*?)`)
 	var styles []string
 	for _, class := range classes {
+
+		// Tailwind
 		style, ok := TailwindMap[class]
 		isAnimate := re.MatchString(class)
 		if ok {
