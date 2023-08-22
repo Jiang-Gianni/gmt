@@ -66,7 +66,7 @@ func transformString(input string, cssLink string) string {
 	re = regexp.MustCompile(`<!--\s*` + "`(.*?)`" + `\s*-->`)
 	transformed = re.ReplaceAllString(transformed, "$1")
 
-	// Comment with text between 2 ticks
+	// Comment with attributes to be injected
 	// Example
 	// <!-- class="bg-teal-700" -->
 	re = regexp.MustCompile(`<!--(.*?)-->\n<(.*?)>`)
@@ -75,6 +75,12 @@ func transformString(input string, cssLink string) string {
 	transformed = re.ReplaceAllString(transformed, "<$2 $1>")
 	re = regexp.MustCompile(`><!--(.*?)-->(.*?)</`)
 	transformed = re.ReplaceAllString(transformed, "><div $1>$2</div><")
+
+	// If the element alreadi had the same class attribute
+	// Example (after the previous injection)
+	// <div class="pikchr-svg" class="bg-teal-700">
+	re = regexp.MustCompile(`<(.*?) class=\"(.*?)\"(.*?)class=\"(.*?)\"(.*?)>`)
+	transformed = re.ReplaceAllString(transformed, `<$1 class="$2 $4" $3 $5>`)
 
 	classes := css.GetClasses(transformed)
 	styles := css.GetStyles(classes)
