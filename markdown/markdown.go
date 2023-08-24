@@ -69,7 +69,7 @@ func transformString(input string, cssLink string) string {
 	// Comment with attributes to be injected
 	// Example
 	// <!-- class="bg-teal-700" -->
-	re = regexp.MustCompile(`<!--(.*?)-->\n<(.*?)>`)
+	re = regexp.MustCompile(`<!--(.*?)-->\r\n<(.*?)>`)
 	transformed = re.ReplaceAllString(transformed, "<$2 $1>")
 	re = regexp.MustCompile(`<!--(.*?)--><(.*?)>`)
 	transformed = re.ReplaceAllString(transformed, "<$2 $1>")
