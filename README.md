@@ -38,14 +38,14 @@ By writing a comment before any element inside the markdown file, the contents o
 **Does not work inside code blocks**
 
 ```md
-<!-- id="my-text" -->
 **My Text**
+<!-- id="my-id" class="my-class" -->
 ```
 
 is parsed as:
 
 ```html
-<p  id="my-text" ><strong>My Text</strong></p>
+<p  id="my-id" class="my-class" ><strong>My Text</strong></p>
 ```
 
 
@@ -55,18 +55,18 @@ is parsed as:
 If Tailwind classes are used then a **style** tag is added on top of the converted HTML file containing the Tailwind CSS styling definitions.
 
 ```md
-<!-- class="text-blue-700" -->
 # My blue title
+<!-- class="text-blue-700" -->
 ```
 
 is parsed as:
 
 ```html
 <style>.text-blue-700{--text-opacity:1;color:#2b6cb0;color:rgba(43,108,176,var(--text-opacity))}</style>
-<h1 id="my-blue-title"  class="text-blue-700" >My blue title</h1>
+<h1 id="my-blue-title"  class="text-blue-700" >My blue title</h1 id="my-blue-title">
 ```
 
-
+Goldmark is set with **WithAutoHeadingID** (reason of `my-blue-title` id)
 
 
 ## Templating
@@ -79,16 +79,20 @@ Using [**quicktemplate**](https://github.com/valyala/quicktemplate)'s syntax as 
 
 ```md
 <!-- `{% func myGoFunction(name string) %}` -->
-<!-- class="text-red-500" -->
-**Hello <!-- `{%s name %}` -->**
+Hello **<!-- `{%s name %}` -->**<!-- class="text-red-500" -->
+
+Hi **<!-- `{%s name %}` -->**
+<!-- class="text-green-500" -->
 <!-- `{% endfunc %}` -->
 ```
 
 is parsed as:
 
 ```html
+<style>.text-red-500{--text-opacity:1;color:#f56565;color:rgba(245,101,101,var(--text-opacity))}.text-green-500{--text-opacity:1;color:#48bb78;color:rgba(72,187,120,var(--text-opacity))}</style>
 {% func myGoFunction(name string) %}
-<p  class="text-red-500" ><strong>Hello {%s name %}</strong></p>
+<p>Hello <strong  class="text-red-500" >{%s name %}</strong></p>
+<p  class="text-green-500" >Hi <strong>{%s name %}</strong></p>
 {% endfunc %}
 ```
 
@@ -100,6 +104,7 @@ is parsed as:
 
 Pikchr's code between **\```pikchr** and **```** are converted into svg.
 
+<!-- class="mx-auto h-full" -->
 ```pikchr
 arrow right 200% "Markdown" "Source"
 box rad 10px "Markdown" "Formatter" "(markdown.c)" fit
@@ -108,10 +113,10 @@ arrow <-> down 70% from last box.s
 box same "Pikchr" "Formatter" "(pikchr.c)" fit
 ```
 
-is parsed as:
+with `class="mx-auto h-full` in the comment right above the pikchr section is parsed as:
 
 ```html
-<div class="pikchr-svg" style="max-width:423px"><svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 423.821 195.84">
+<div class="pikchr-svg mx-auto h-full"      style="max-width:423px"><svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 423.821 195.84">
 <polygon points="146,37 134,41 134,33" style="fill:rgb(0,0,0)"/>
 <path d="M2,37L140,37"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
 <text x="74" y="25" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">Markdown</text>

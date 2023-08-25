@@ -69,18 +69,16 @@ func transformString(input string, cssLink string) string {
 	// Comment with attributes to be injected
 	// Example
 	// <!-- class="bg-teal-700" -->
-	re = regexp.MustCompile(`<!--(.*?)-->\r\n<(.*?)>`)
-	transformed = re.ReplaceAllString(transformed, "<$2 $1>")
-	re = regexp.MustCompile(`<!--(.*?)--><(.*?)>`)
-	transformed = re.ReplaceAllString(transformed, "<$2 $1>")
-	re = regexp.MustCompile(`><!--(.*?)-->(.*?)</`)
-	transformed = re.ReplaceAllString(transformed, "><div $1>$2</div><")
-
-	// If the element alreadi had the same class attribute
-	// Example (after the previous injection)
-	// <div class="pikchr-svg" class="bg-teal-700">
-	re = regexp.MustCompile(`<(.*?) class=\"(.*?)\"(.*?)class=\"(.*?)\"(.*?)>`)
-	transformed = re.ReplaceAllString(transformed, `<$1 class="$2 $4" $3 $5>`)
+	re = regexp.MustCompile(`(\w+)<!--(.*?)-->(\w+)`)
+	transformed = re.ReplaceAllString(transformed, "<p $2>$1</p>$3")
+	re = regexp.MustCompile(`<!--(.*?)class=\"(.*?)\"(.*?)-->\r?\n<div(.*?) class=\"(.*?)\"(.*?)>`)
+	transformed = re.ReplaceAllString(transformed, `<div$4 class="$5 $2" $1 $3 $6>`)
+	re = regexp.MustCompile(`<([^<>]*)>([^<>]*)</(.*?)><!--(.*?)-->`)
+	transformed = re.ReplaceAllString(transformed, "<$1 $4>$2</$3>")
+	re = regexp.MustCompile(`<p>((^[<>/]|.)*?)</p>\r?\n<!--(.*?)-->`)
+	transformed = re.ReplaceAllString(transformed, "<p $3>$1</p>")
+	re = regexp.MustCompile(`<(.*?)>(.*?)</(.*?)>\r?\n<!--(.*?)-->`)
+	transformed = re.ReplaceAllString(transformed, "<$1 $4>$2</$1>")
 
 	classes := css.GetClasses(transformed)
 	styles := css.GetStyles(classes)
