@@ -10,8 +10,11 @@ import (
 	"regexp"
 
 	"github.com/Jiang-Gianni/gmt/css"
+	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	pikchr "github.com/jchenry/goldmark-pikchr"
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
+
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
@@ -27,6 +30,12 @@ var Md = goldmark.New(
 	goldmark.WithExtensions(
 		extension.GFM,
 		&pikchr.Extender{},
+		highlighting.NewHighlighting(
+			highlighting.WithStyle("hrdark"),
+			highlighting.WithFormatOptions(
+				chromahtml.WithLineNumbers(true),
+			),
+		),
 	),
 )
 

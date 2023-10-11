@@ -139,4 +139,3 @@ with `class="mx-auto h-full` in the comment right above the pikchr section is pa
 </svg>
 </div>
 ```
-![](./assets/pikchr.svg)
