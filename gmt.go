@@ -10,14 +10,12 @@ import (
 )
 
 func main() {
-	var out string
-	var dir string
-	var file string
-	var css string
+	var out, dir, file, css, head string
 	flag.StringVar(&out, "out", ".", "Output Directory")
 	flag.StringVar(&dir, "dir", ".", "Input Directory")
 	flag.StringVar(&file, "file", "", "File")
 	flag.StringVar(&css, "css", "", "Css Link")
+	flag.StringVar(&head, "head", "", "Header File")
 	flag.Parse()
 
 	var mdFiles []string
@@ -29,7 +27,15 @@ func main() {
 
 	for _, mdFile := range mdFiles {
 		htmlFile := out + "/" + strings.ReplaceAll(mdFile, ".md", ".html")
-		markdown.ConvertFile(mdFile, htmlFile, css)
+		c := markdown.Converter{
+			MdFile:     mdFile,
+			OutputFile: htmlFile,
+			CssLink:    css,
+			HeaderFile: head,
+		}
+		if err := c.ConvertFile(); err != nil {
+			panic(err)
+		}
 	}
 
 }

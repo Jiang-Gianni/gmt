@@ -3,8 +3,6 @@ package markdown
 import (
 	"bufio"
 	"bytes"
-	"io"
-	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -39,28 +37,53 @@ var Md = goldmark.New(
 	),
 )
 
-func ConvertFile(mdFile string, outputFile string, css string) {
-	f, err := os.Open(mdFile)
+type Converter struct {
+	MdFile     string
+	OutputFile string
+	CssLink    string
+	HeaderFile string
+}
+
+func (c *Converter) ConvertFile() error {
+	mdBytes, err := os.ReadFile(c.MdFile)
 	if err != nil {
-		log.Println(err)
+		return err
 	}
-	defer f.Close()
-	b, err := io.ReadAll(f)
-	if err != nil {
-		log.Println(err)
-	}
+
 	var buf bytes.Buffer
-	if err := Md.Convert(b, &buf); err != nil {
-		panic(err)
+	if err := Md.Convert(mdBytes, &buf); err != nil {
+		return err
 	}
+
 	contents := buf.String()
-	os.MkdirAll(filepath.Dir(outputFile), os.ModePerm)
-	o, _ := os.Create(outputFile)
+	if err := os.MkdirAll(filepath.Dir(c.OutputFile), os.ModePerm); err != nil {
+		return err
+	}
+
+	o, err := os.Create(c.OutputFile)
+	if err != nil {
+		return err
+	}
+	defer o.Close()
+
+	if c.HeaderFile != "" {
+		headBytes, err := os.ReadFile(c.HeaderFile)
+		if err != nil {
+			return err
+		}
+		_, err = o.Write(headBytes)
+		if err != nil {
+			return err
+		}
+	}
+
 	w := bufio.NewWriter(o)
-	transformed := transformString(contents, css)
-	w.WriteString(transformed)
-	w.Flush()
-	o.Close()
+	transformed := transformString(contents, c.CssLink)
+	_, err = w.WriteString(transformed)
+	if err != nil {
+		return err
+	}
+	return w.Flush()
 }
 
 func transformString(input string, cssLink string) string {

@@ -29,6 +29,10 @@ If you want to add an external stylesheet link:
 gmt -dir exampleMdDirectory -out exampleOutDirectory -css externalCss.css
 ```
 
+If you want to copy the content of a local html file in the output:
+```bash
+gmt -dir exampleMdDirectory -out exampleOutDirectory -head myHeadFile.html
+```
 
 
 ## Tag Attributes
